@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>A Letter for Elis 💌</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%3E<text y=%2226%22 font-size=%2224%22>💌</text></svg>">
+  
+  <!-- Google Fonts: Quicksand for clean rounded body, Caveat & Patrick Hand for warm handwritten accents -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Patrick+Hand&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient Background Canvas for floating hearts & gentle sparkles -->
+  <canvas id="ambient-canvas"></canvas>
+
+  <!-- Tap Sparkle / Heart Burst Container -->
+  <div id="tap-effects-container" aria-hidden="true"></div>
+
+  <!-- Music Toggle Floating Pill -->
+  <header class="top-nav">
+    <button id="music-toggle-btn" class="music-pill playing" aria-label="Toggle background music" title="Nyalakan / Matikan Musik">
+      <span class="music-note-icon">♪</span>
+      <span class="music-label">Music <span class="music-state">ON</span></span>
+      <span class="music-wave" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </span>
+    </button>
+  </header>
+
+  <!-- Audio Element (Support custom music.mp3 with fallback to procedural music box) -->
+  <audio id="bgm-audio" loop preload="none" src="music.mp3"></audio>
+
+  <!-- Main Experience Wrapper -->
+  <main class="experience-wrapper">
+    
+    <!-- ================= SCREEN 1: WELCOME SCREEN ================= -->
+    <section id="welcome-screen" class="screen active" aria-labelledby="welcome-title">
+      <div class="glass-card welcome-card">
+        <div class="floating-badge">
+          <span class="badge-icon">🌸</span>
+          <span class="badge-text">Special Message</span>
+        </div>
+
+        <h1 id="welcome-title" class="title-primary">
+          Selamat datang, Elis <span class="heart-pulse">🌸</span>
+        </h1>
+
+        <p class="subtitle-text">
+          Di sini ada sebuah surat kecil dari <strong>Ryuu / Robby</strong> khusus buat kamu.
+        </p>
+
+        <div class="cute-divider">
+          <span>✨</span>
+          <span class="divider-line"></span>
+          <span>💌</span>
+          <span class="divider-line"></span>
+          <span>✨</span>
+        </div>
+
+        <p class="teaser-text">
+          Kayaknya ada sesuatu yang ingin Ryuu sampaikan...
+        </p>
+
+        <button id="start-btn" class="cute-btn btn-primary pulse-btn" type="button">
+          <span>Open Letter</span>
+          <span class="btn-icon">💌</span>
+        </button>
+
+        <div class="welcome-bottom-decor">
+          <span>🌷</span>
+          <span>✨</span>
+          <span>🤍</span>
+          <span>✨</span>
+          <span>🌷</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SCREEN 2: ENVELOPE SCREEN ================= -->
+    <section id="envelope-screen" class="screen" aria-labelledby="envelope-instruction">
+      <div class="envelope-container">
+        
+        <div class="envelope-header-text">
+          <p id="envelope-instruction" class="instruction-title">Kayaknya surat ini buat kamu... 💌</p>
+          <p class="instruction-sub">Klik amplopnya untuk membukanya.</p>
+        </div>
+
+        <!-- Interactive 3D Cute Envelope -->
+        <div id="envelope-wrapper" class="envelope-wrapper" role="button" tabindex="0" aria-label="Buka amplop surat">
+          
+          <div class="envelope-glow"></div>
+          
+          <div class="envelope">
+            <!-- Back pocket of envelope -->
+            <div class="envelope-back"></div>
+
+            <!-- The Letter Sheet that slides upward -->
+            <div id="envelope-letter" class="envelope-letter">
+              <div class="letter-mini-stamp">🌸</div>
+              <div class="letter-mini-lines">
+                <span class="mini-line"></span>
+                <span class="mini-line short"></span>
+                <span class="mini-line"></span>
+              </div>
+              <div class="letter-mini-tag">To: Elis 💗</div>
+            </div>
+
+            <!-- Left and Right Flaps -->
+            <div class="envelope-left"></div>
+            <div class="envelope-right"></div>
+
+            <!-- Bottom Flap -->
+            <div class="envelope-bottom"></div>
+
+            <!-- Top Opening Flap -->
+            <div id="envelope-top-flap" class="envelope-top"></div>
+
+            <!-- Heart Wax Seal Badge -->
+            <div id="envelope-seal" class="envelope-seal">
+              <div class="seal-inner">
+                <span class="seal-heart">💗</span>
+              </div>
+            </div>
+
+            <!-- "For Elis" Tape/Tag -->
+            <div class="envelope-tag">
+              <span>For Elis 💌</span>
+            </div>
+
+            <!-- Sparkle decorations around envelope -->
+            <div class="envelope-sparkle sp-1">✨</div>
+            <div class="envelope-sparkle sp-2">💖</div>
+            <div class="envelope-sparkle sp-3">✨</div>
+            <div class="envelope-sparkle sp-4">🌸</div>
+          </div>
+        </div>
+
+        <div class="envelope-hint">
+          <span class="tap-finger">👆</span> Tap the envelope
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SCREEN 3: LETTER VIEWER ================= -->
+    <section id="letter-screen" class="screen" aria-label="Membaca Surat">
+      <div class="letter-stage">
+        
+        <!-- Header Counter & Indicator -->
+        <div class="letter-meta-header">
+          <div class="step-badge" id="letter-counter">1 / 4</div>
+          <div class="progress-dots" id="progress-dots" role="tablist" aria-label="Halaman surat">
+            <button class="dot active" data-index="0" aria-label="Surat 1" role="tab" aria-selected="true"></button>
+            <button class="dot" data-index="1" aria-label="Surat 2" role="tab" aria-selected="false"></button>
+            <button class="dot" data-index="2" aria-label="Surat 3" role="tab" aria-selected="false"></button>
+            <button class="dot" data-index="3" aria-label="Surat 4" role="tab" aria-selected="false"></button>
+          </div>
+        </div>
+
+        <!-- Sliding Letter Card Container -->
+        <div class="letter-card-viewport" id="card-viewport">
+          <article class="letter-card" id="active-letter-card">
+            
+            <!-- Washi tape decoration at top -->
+            <div class="washi-tape" aria-hidden="true"></div>
+
+            <!-- Card Corner Cute Stickers -->
+            <div class="card-corner-decor top-right" id="card-stamp">💌</div>
+            
+            <!-- Letter Header -->
+            <header class="letter-card-header">
+              <span class="letter-category-tag" id="letter-tag">Surat #1</span>
+              <h2 class="letter-title" id="letter-title">Surat Pertama 💌</h2>
+            </header>
+
+            <!-- Letter Body Content -->
+            <div class="letter-body" id="letter-body">
+              <!-- Rendered via JavaScript -->
+            </div>
+
+            <!-- Letter Sign-off -->
+            <footer class="letter-footer" id="letter-footer">
+              <div class="signature-wrap">
+                <p class="signature-text" id="letter-signature">— dari Ryuu / Robby</p>
+              </div>
+            </footer>
+
+            <!-- Subtle Paper Watermark -->
+            <div class="paper-watermark">✨</div>
+          </article>
+        </div>
+
+        <!-- Navigation Controls -->
+        <nav class="letter-nav-controls" aria-label="Navigasi Surat">
+          <button id="prev-btn" class="nav-btn prev-btn disabled" type="button" aria-label="Surat Sebelumnya">
+            <span class="nav-arrow">←</span>
+            <span class="nav-label">Previous</span>
+          </button>
+
+          <button id="next-btn" class="nav-btn next-btn" type="button" aria-label="Surat Berikutnya">
+            <span class="nav-label">Next</span>
+            <span class="nav-arrow">→</span>
+          </button>
+        </nav>
+
+        <p class="swipe-hint-text">💡 Tips: Kamu juga bisa swipe layar di HP</p>
+      </div>
+    </section>
+
+    <!-- ================= SCREEN 4: FINAL CELEBRATION ================= -->
+    <section id="final-screen" class="screen" aria-labelledby="final-title">
+      <div class="glass-card final-card">
+        
+        <div class="final-celebration-badge">
+          <span class="celebration-icon">🎉</span>
+        </div>
+
+        <h2 id="final-title" class="title-primary final-title">
+          That's all for now, Elis
+        </h2>
+
+        <p class="subtitle-text final-subtitle">
+          Semoga surat kecil ini bisa bikin kamu senyum hari ini.
+        </p>
+
+        <div class="special-teaser-box">
+          <span class="teaser-icon">🎁</span>
+          <p class="final-highlight">
+            See you on the next surprise... 👀
+          </p>
+        </div>
+
+        <div class="cute-divider">
+          <span>✨</span>
+          <span class="divider-line"></span>
+          <span>✨</span>
+          <span class="divider-line"></span>
+          <span>✨</span>
+        </div>
+
+        <p class="final-note-from">
+          Dibuat oleh<br>
+          <strong class="author-name">Ryuu / Robby</strong>
+        </p>
+
+        <div class="final-action-group">
+          <button id="read-again-btn" class="cute-btn btn-primary" type="button">
+            <span>Read Again</span>
+            <span class="btn-icon">✨</span>
+          </button>
+
+          <button id="share-love-btn" class="cute-btn btn-secondary" type="button">
+            <span>Send Smile Back</span>
+            <span class="btn-icon">✨</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
